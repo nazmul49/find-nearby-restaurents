@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { Restaurant } from '../entities/restaurant.entity';
 import { CreateRestaurantDto } from '../dto/create-restaurant.dto';
 import { FilterRestaurantsDto, PriceRange } from '../dto/filter-restaurants.dto';
-import { RestaurantType } from '../entities/restaurant-type.entity';
-import { AmbienceTag } from '../entities/ambience-tag.entity';
 import { LocationService } from './location.service';
 
 @Injectable()
@@ -13,29 +11,15 @@ export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private restaurantRepository: Repository<Restaurant>,
-    @InjectRepository(RestaurantType)
-    private restaurantTypeRepository: Repository<RestaurantType>,
-    @InjectRepository(AmbienceTag)
-    private ambienceTagRepository: Repository<AmbienceTag>,
     private locationService: LocationService,
   ) { }
 
   async findAll(filterDto: FilterRestaurantsDto) {
-    const {
-      latitude,
-      longitude,
-      priceRange,
-      types,
-      searchQuery,
-      minRating,
-      ambienceTags,
-      page = 1,
-      limit = 10
-    } = filterDto;
+    const { latitude, longitude, priceRange, searchQuery, minRating, offset = 0, limit = 10 } = filterDto;
 
     const query = this.restaurantRepository.createQueryBuilder('restaurant')
-      .leftJoinAndSelect('restaurant.types', 'types')
-      .leftJoinAndSelect('restaurant.ambienceTags', 'ambienceTags')
+      .leftJoinAndSelect('restaurant.media', 'media')
+      .leftJoinAndSelect('restaurant.menuItems', 'menuItems')
       .where('restaurant.isActive = :isActive', { isActive: true });
 
     // Add location-based filtering if coordinates provided
@@ -62,15 +46,10 @@ export class RestaurantService {
       query.andWhere('restaurant.averagePrice BETWEEN :min AND :max', range);
     }
 
-    // Restaurant types filter
-    if (types?.length) {
-      query.andWhere('types.id IN (:...typeIds)', { typeIds: types });
-    }
-
-    // Ambience tags filter
-    if (ambienceTags?.length) {
-      query.andWhere('ambienceTags.id IN (:...tagIds)', { tagIds: ambienceTags });
-    }
+    // // Restaurant types filter
+    // if (types?.length) {
+    //   query.andWhere('types.id IN (:...typeIds)', { typeIds: types });
+    // }
 
     // Rating filter
     if (minRating) {
@@ -82,8 +61,11 @@ export class RestaurantService {
       query.andWhere('restaurant.name LIKE :search', { search: `%${searchQuery}%` });
     }
 
+    // Order by created date in decending order
+    query.orderBy('restaurant.createdAt', 'DESC');
+
     // Pagination
-    const skip = (page - 1) * limit;
+    const skip = offset;
     query.skip(skip).take(limit);
 
     const [restaurants, total] = await query.getManyAndCount();
@@ -92,7 +74,6 @@ export class RestaurantService {
       data: restaurants,
       meta: {
         total,
-        page,
         limit,
         totalPages: Math.ceil(total / limit),
       }
@@ -104,12 +85,8 @@ export class RestaurantService {
       where: { id },
       relations: [
         'types',
-        'ambienceTags',
         'menuItems',
         'photos',
-        'timeSlots',
-        'reviews',
-        'reviews.user'
       ],
     });
 
@@ -122,35 +99,11 @@ export class RestaurantService {
 
   async create(createDto: CreateRestaurantDto): Promise<Restaurant> {
     const restaurant = this.restaurantRepository.create(createDto);
-
-    // Fetch and assign restaurant types
-    restaurant.types = await this.restaurantTypeRepository.findByIds(
-      createDto.restaurantTypeIds
-    );
-
-    // Fetch and assign ambience tags
-    restaurant.ambienceTags = await this.ambienceTagRepository.findByIds(
-      createDto.ambienceTagIds
-    );
-
     return await this.restaurantRepository.save(restaurant);
   }
 
   async update(id: string, updateDto: Partial<CreateRestaurantDto>): Promise<Restaurant> {
     const restaurant = await this.findOne(id);
-
-    if (updateDto.restaurantTypeIds) {
-      restaurant.types = await this.restaurantTypeRepository.findByIds(
-        updateDto.restaurantTypeIds
-      );
-    }
-
-    if (updateDto.ambienceTagIds) {
-      restaurant.ambienceTags = await this.ambienceTagRepository.findByIds(
-        updateDto.ambienceTagIds
-      );
-    }
-
     Object.assign(restaurant, updateDto);
     return await this.restaurantRepository.save(restaurant);
   }

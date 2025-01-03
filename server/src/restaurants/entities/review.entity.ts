@@ -13,8 +13,8 @@ export class Review {
   @Column({ nullable: true })
   comment: string;
 
-  @ManyToOne(() => Restaurant, restaurant => restaurant.reviews)
-  restaurant: Restaurant;
+  // @ManyToOne(() => Restaurant, restaurant => restaurant.reviews)
+  // restaurant: Restaurant;
 
   @ManyToOne(() => User)
   user: User;

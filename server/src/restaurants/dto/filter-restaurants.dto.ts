@@ -1,4 +1,5 @@
 import { IsOptional, IsNumber, Min, Max, IsString, IsEnum, IsArray } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export enum PriceRange {
   LOW = 'low',
@@ -38,18 +39,13 @@ export class FilterRestaurantsDto {
   @Max(5)
   minRating?: number;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  ambienceTags?: string[];
+  @IsNumber()
+  @Min(0)
+  @Transform(({ value }) => Number(value), { toClassOnly: true })
+  offset?: number = 0;
 
-  @IsOptional()
   @IsNumber()
   @Min(1)
-  page?: number = 1;
-
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
+  @Transform(({ value }) => Number(value), { toClassOnly: true })
   limit?: number = 10;
 }

@@ -1,11 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Media } from './media.entity';
 import { MenuItem } from './menu-item.entity';
-import { Review } from './review.entity';
-import { RestaurantType } from './restaurant-type.entity';
-import { AmbienceTag } from './ambience-tag.entity';
-import { RestaurantPhoto } from './restaurant-photo.entity';
 
-@Entity('restaurants')
+@Entity('restaurant')
 export class Restaurant {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,13 +28,13 @@ export class Restaurant {
   @Column({ nullable: true })
   googleMapUrl: string;
 
-  @Column()
+  @Column({ default: null })
   contactPhone: string;
 
-  @Column('time')
+  @Column('time', { default: null })
   openingTime: string;
 
-  @Column('time')
+  @Column('time', { default: null })
   closingTime: string;
 
   @Column({ default: true })
@@ -49,22 +46,11 @@ export class Restaurant {
   @Column('int', { default: 0 })
   totalReviews: number;
 
-  @ManyToMany(() => RestaurantType)
-  @JoinTable()
-  types: RestaurantType[];
-
-  @ManyToMany(() => AmbienceTag)
-  @JoinTable()
-  ambienceTags: AmbienceTag[];
-
-  @OneToMany(() => MenuItem, menuItem => menuItem.restaurant)
+  @OneToMany(() => MenuItem, menuItem => menuItem.restaurant, { cascade: true })
   menuItems: MenuItem[];
 
-  @OneToMany(() => Review, review => review.restaurant)
-  reviews: Review[];
-
-  @OneToMany(() => RestaurantPhoto, photo => photo.restaurant)
-  photos: RestaurantPhoto[];
+  @OneToMany(() => Media, media => media.restaurant, { cascade: true })
+  media: Media[];
 
   // @Column({ type: 'json', nullable: true })
   // seoMetadata: {

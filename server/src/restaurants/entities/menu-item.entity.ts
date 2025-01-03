@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Restaurant } from './restaurant.entity';
 
-@Entity('menu_items')
+@Entity('menu_item')
 export class MenuItem {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,11 +12,11 @@ export class MenuItem {
   @Column()
   type: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  price: number;
-
   @Column({ nullable: true })
   description: string;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  price: number;
 
   @Column({ nullable: true })
   image: string;
@@ -24,7 +24,7 @@ export class MenuItem {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @ManyToOne(() => Restaurant, restaurant => restaurant.menuItems)
+  @ManyToOne(() => Restaurant, restaurant => restaurant.menuItems, { onDelete: 'CASCADE' })
   restaurant: Restaurant;
 
   @Column()

@@ -22,6 +22,9 @@ export class CreateRestaurantDto {
   @IsString()
   address: string;
 
+  @IsString()
+  description: string;
+
   @IsNumber()
   @Min(-90)
   @Max(90)
@@ -32,46 +35,24 @@ export class CreateRestaurantDto {
   @Max(180)
   longitude: number;
 
-  @IsString()
-  description: string;
-
   @IsUrl()
   @IsOptional()
   googleMapUrl?: string;
 
   @IsString()
   @IsOptional()
-  binNumber?: string;
+  contactPhone?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
-  websiteUrl?: string;
+  openingTime?: string;
 
   @IsString()
-  contactPhone: string;
-
-  @IsString()
-  openingTime: string;
-
-  @IsString()
-  closingTime: string;
+  @IsOptional()
+  closingTime?: string;
 
   @IsNumber()
+  @IsOptional()
   @Min(0)
-  totalReservationSeats: number;
-
-
-  @IsArray()
-  @IsString({ each: true })
-  restaurantTypeIds: string[];
-
-  @IsArray()
-  @IsString({ each: true })
-  ambienceTagIds: string[];
-
-  // @IsOptional()
-  // @ValidateNested()
-  // @Type(() => SeoMetadataDto)
-  // seoMetadata?: SeoMetadataDto;
+  totalReservationSeats?: number;
 }
-
