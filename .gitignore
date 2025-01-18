@@ -1,6 +1,9 @@
 .vscode/
 
 client/node_modules/
+client/.nuxt
+client/.env
+client/.output
 
 server/node_modules/
 server/dist/
