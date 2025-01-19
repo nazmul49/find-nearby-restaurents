@@ -1,17 +1,15 @@
 <template>
-  <div class="flex h-screen">
-    <AdminSidebar />
-    <div class="flex-1 overflow-auto">
-      <AdminHeader />
-      <main class="p-6">
+  <div>
+    <!-- Header -->
+    <Header />
+    <div class="container lg:grid lg:grid-cols-12 lg:gap-10">
+      <!-- Sidebar -->
+      <Sidebar class="sticky top-[65px] hidden h-[calc(100vh-65px)] py-5 lg:col-span-3 lg:block" />
+
+      <!-- Main Section -->
+      <main class="py-5 lg:col-span-9">
         <slot />
       </main>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-definePageMeta({
-  middleware: ['auth', 'admin']
-})
-</script>

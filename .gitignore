@@ -1,9 +1,12 @@
 .vscode/
+client-old/
+.DS_Store
 
 client/node_modules/
 client/.nuxt
 client/.env
 client/.output
+client/.DS_Store
 
 server/node_modules/
 server/dist/

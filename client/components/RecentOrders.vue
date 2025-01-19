@@ -11,7 +11,6 @@
             <th class="p-4 font-medium uppercase text-muted-foreground">Branch name</th>
             <th class="p-4 font-medium uppercase text-muted-foreground">Address</th>
             <th class="p-4 font-medium uppercase text-muted-foreground">Active</th>
-            <th class="p-4 font-medium uppercase text-muted-foreground">Registered</th>
             <th class="p-4 font-medium uppercase text-muted-foreground"></th>
           </tr>
         </thead>
@@ -21,7 +20,6 @@
             <td class="p-4">Gulshan branch 001</td>
             <td class="p-4">Gulshan 1 circle</td>
             <td class="p-4">True</td>
-            <td class="p-4">20-01-2025</td>
             <td class="p-4">
               <div class="flex items-center gap-3">
                 <button>
@@ -41,6 +39,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-</script>

@@ -1,42 +1,33 @@
-# Nuxt 3 Minimal Starter
+# Analytics Dashboard
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ed5e5a46-63f2-48c5-91a0-7a6a129b37f0/deploy-status)](https://app.netlify.com/sites/bejewelled-kitten-6e2434/deploys)
 
-## Setup
 
-Make sure to install the dependencies:
+Created with Nuxt 3 + Tailwind CSS
 
-```bash
-# yarn
-yarn install
+## Demo
 
-# npm
-npm install
+Find the demo here: [analytics-ui.behonbaker.com](https://analytics-ui.behonbaker.com)
 
-# pnpm
-pnpm install
-```
+Tailwind config was copied from [shadcn-ui](https://ui.shadcn.com/)
 
-## Development Server
+![Cover](/public/cover.png)
 
-Start the development server on http://localhost:3000
+## Modules Used
 
-```bash
-npm run dev
-```
+- @nuxtjs/tailwindcss
+- nuxt-icon
+- @vueuse/nuxt
+- nuxt-headlessui
+- @morev/vue-transitions/nuxt
+- @davestewart/nuxt-scrollbar
 
-## Production
+Chart JS has no nuxt module but it was used as well.
 
-Build the application for production:
+Shadcn UI was used for the styles. I am not reinveting the wheel here.
 
-```bash
-npm run build
-```
+## Components
 
-Locally preview production build:
+Check the components folder for the components used in this project. Since I am not switching pages, I used the [`app.vue`](/app.vue) file to render everything.
 
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Yes, light and dark mode is in place. Thanks to VueUse

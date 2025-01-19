@@ -20,9 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { StarIcon } from '@heroicons/vue/20/solid'
+// import { StarIcon } from '@heroicons/vue/20/solid'
 import type { Restaurant } from '~/types'
 
 defineProps<{
   restaurant: Restaurant
-}>()</script>
+}>()
+</script>

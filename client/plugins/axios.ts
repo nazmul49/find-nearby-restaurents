@@ -1,10 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default defineNuxtPlugin(() => {
-  const config = useRuntimeConfig()
-  
-  axios.defaults.baseURL = config.public.apiBaseUrl
-  
+  axios.defaults.baseURL = process.env.API_BASE_URL as string;
+
   axios.interceptors.response.use(
     response => response,
     error => {
@@ -12,4 +10,4 @@ export default defineNuxtPlugin(() => {
       return Promise.reject(error)
     }
   )
-})
+});
